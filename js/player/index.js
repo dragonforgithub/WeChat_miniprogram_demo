@@ -146,7 +146,10 @@ export default class Player extends Sprite {
 
     // aad1:根据等级增加子弹数
     for (let i = 0; i < this.level; i++) {
-      const bullet = databus.pool.getItemByClass('bullet', Bullet);
+      //const bullet = databus.pool.getItemByClass('bullet', Bullet);
+      /*为其中创建的bullets提供归属*/
+      const bullet = databus.pool.getItemByClass('bullet', Bullet, { direction: 'up', owner: this });
+      
       const middle = this.x + this.width / 2 - bullet.width / 2;
       const x = !i ? middle : (i % 2 === 0 ? middle + 30 : middle - 30);
       bullet.init(

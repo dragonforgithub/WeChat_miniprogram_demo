@@ -1,5 +1,6 @@
 import Animation from '../base/animation'
 import DataBus   from '../databus'
+import Bullet from '../player/bullet' //aad1
 
 const ENEMY_IMG_SRC = 'images/enemy.png'
 const SG_IMG_SRC = 'images/sg.png'
@@ -53,5 +54,21 @@ export default class Enemy extends Animation {
     // 对象回收
     if ( this.y > window.innerHeight + this.height )
       databus.removeEnemey(this)
+  }
+
+  /**
+   * 敌机射击操作
+   * 射击时机由外部决定
+   */
+  shoot() {
+    //const bullet = databus.pool.getItemByClass('bullet', Bullet);
+    const bullet = databus.pool.getItemByClass('bullet', Bullet, { direction: 'down', owner: this });
+    bullet.init(
+      this.x + this.width / 2 - bullet.width / 2,
+      this.y + 10,
+      this[__.speed] + 5 //子弹比自身速度快5
+    );
+
+    databus.bullets.push(bullet);
   }
 }

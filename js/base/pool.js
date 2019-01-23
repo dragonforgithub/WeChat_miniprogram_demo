@@ -25,14 +25,30 @@ export default class Pool {
    * 根据传入的对象标识符，查询对象池
    * 对象池为空创建新的类，否则从对象池中取
    */
-  getItemByClass(name, className) {
+  getItemByClass(name, className, properties) {
     let pool = this.getPoolBySign(name)
 
+    /*
     let result = (  pool.length
                   ? pool.shift()
                   : new className()  )
 
     return result
+    */
+
+    /*对象获取我们加入对象属性的判断，当有传入对象属性时，我们获取所有属性值一致的已回收对象，
+     *若没有找到或者对象池为空时，则用属性创建新对象*/
+
+    if (pool.length === 0) return new className(properties);
+
+    if (!properties) return pool.shift();
+
+    const index = pool.findIndex(item => {
+      return Object.keys(properties).every(property => {
+        return item[property] === properties[property];
+      });
+    });
+    return index !== -1 ? pool.splice(index, 1)[0] : new className(properties)
   }
 
   /**

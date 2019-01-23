@@ -64,6 +64,7 @@ export default class Main {
       for ( let i = 0, il = databus.enemys.length; i < il;i++ ) {
         let enemy = databus.enemys[i]
 
+        /*
         if ( !enemy.isPlaying && enemy.isCollideWith(bullet) ) {
           enemy.playAnimation()
           that.music.playExplosion()
@@ -72,6 +73,21 @@ export default class Main {
           databus.score  += 1
 
           break
+        }*/
+
+        if (bullet.owner instanceof Enemy) {
+          if (this.player.isCollideWith(bullet)){
+            databus.gameOver = true
+            that.music.playExplosion();
+          }
+        } else if (!enemy.isPlaying && enemy.isCollideWith(bullet)) {
+          enemy.playAnimation();
+          that.music.playExplosion();
+
+          bullet.visible = false;
+          databus.score += 1;
+
+          break;
         }
       }
     })
@@ -81,7 +97,6 @@ export default class Main {
 
       //if ( this.player.isCollideWith(enemy) ) {
       if (this.player.isCollideWith(enemy)) {
-        //TODO:只能打到我
         databus.gameOver = true
 
         break
@@ -157,8 +172,8 @@ export default class Main {
 
     this.enemyGenerate()
 
-    // aad1：每击落30架敌机升一级
-    this.player.level = Math.max(1, Math.ceil(databus.score / 3));
+    // aad1：每击落15架敌机升一级
+    this.player.level = Math.max(1, Math.ceil(databus.score / 15));
 
     this.collisionDetection()
 
@@ -174,6 +189,17 @@ export default class Main {
 
     this.update()
     this.render()
+
+    databus.enemys.forEach(enemy => {
+      const enemyShootPositions = [
+        -enemy.height + 6 * 5,
+        -enemy.height + 6 * 60
+      ];
+      if (enemyShootPositions.indexOf(enemy.y) !== -1) {
+        enemy.shoot();
+        this.music.playShoot();
+      }
+    });
 
     this.aniId = window.requestAnimationFrame(
       this.bindLoop,

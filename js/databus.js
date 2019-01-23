@@ -43,9 +43,13 @@ export default class DataBus {
    * 此后不进入帧循环
    */
   removeBullets(bullet) {
-    let temp = this.bullets.shift()
+    //let temp = this.bullets.shift()
+    const index = this.bullets.findIndex(b => b === bullet);
 
-    temp.visible = false
+    //temp.visible = false
+    bullet.visible = false
+
+    this.bullets.splice(index, 1);
 
     this.pool.recover('bullet', bullet)
   }
