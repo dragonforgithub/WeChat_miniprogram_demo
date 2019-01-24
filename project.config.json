@@ -9,8 +9,8 @@
 	},
 	"compileType": "game",
 	"libVersion": "1.9.94",
-	"appid": "wx918c50af6deb2c98",
-	"projectname": "chinese-character-game",
+	"appid": "wx1234176bac63bc33",
+	"projectname": "minigame-plus",
 	"condition": {
 		"search": {
 			"current": -1,

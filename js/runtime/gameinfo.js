@@ -16,6 +16,18 @@ export default class GameInfo {
     )
   }
 
+  renderGameLevel(ctx, level) {
+
+    ctx.fillStyle = "#ffe345"
+    ctx.font = "18px Arial"
+
+    ctx.fillText(
+      '等级：' + level,
+      10,
+      screenHeight - 10
+    )
+  }
+
   renderGameOver(ctx, score) {
     ctx.drawImage(atlas, 0, 0, 119, 108, screenWidth / 2 - 150, screenHeight / 2 - 100, 300, 300)
 

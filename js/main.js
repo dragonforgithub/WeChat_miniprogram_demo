@@ -5,7 +5,7 @@ import GameInfo   from './runtime/gameinfo'
 import Music      from './runtime/music'
 import DataBus    from './databus'
 
-let ctx   = canvas.getContext('2d')
+let ctx = canvas.getContext('2d')
 let databus = new DataBus()
 
 /**
@@ -61,6 +61,21 @@ export default class Main {
     let that = this
 
     databus.bullets.forEach((bullet) => {
+
+      // 子弹相撞也消失
+      if (bullet.owner instanceof Player) {
+        for (let i = 0, il = databus.bullets.length; i < il; i++) {
+          let theBullet = databus.bullets[i]
+          if (theBullet.owner instanceof Enemy && theBullet.isCollideWith(bullet)){
+            theBullet.visible = false
+            bullet.visible = false
+            //databus.removeBullets(theBullet)
+            
+            break
+          }
+        }
+      }
+
       for ( let i = 0, il = databus.enemys.length; i < il;i++ ) {
         let enemy = databus.enemys[i]
 
@@ -76,10 +91,10 @@ export default class Main {
         }*/
 
         if (bullet.owner instanceof Enemy) {
-          if (this.player.isCollideWith(bullet)){
+          if (this.player.isCollideWith(bullet)) {
             databus.gameOver = true
             that.music.playExplosion();
-          }
+          } 
         } else if (!enemy.isPlaying && enemy.isCollideWith(bullet)) {
           enemy.playAnimation();
           that.music.playExplosion();
@@ -144,6 +159,7 @@ export default class Main {
     })
 
     this.gameinfo.renderGameScore(ctx, databus.score)
+    this.gameinfo.renderGameLevel(ctx, databus.level)
 
     // 游戏结束停止帧循环
     if ( databus.gameOver ) {
@@ -172,12 +188,12 @@ export default class Main {
 
     this.enemyGenerate()
 
-    // aad1：每击落15架敌机升一级
-    this.player.level = Math.max(1, Math.ceil(databus.score / 15));
-
+    // aad1：每击落22架敌机升一级
+    databus.level = Math.max(1, Math.ceil(databus.score / 22));
+    
     this.collisionDetection()
 
-    if ( databus.frame % 20 === 0 ) {
+    if ( databus.frame % 15 === 0 ) {
       this.player.shoot()
       this.music.playShoot()
     }
@@ -195,9 +211,12 @@ export default class Main {
         -enemy.height + 6 * 5,
         -enemy.height + 6 * 60
       ];
+      
       if (enemyShootPositions.indexOf(enemy.y) !== -1) {
-        enemy.shoot();
-        this.music.playShoot();
+        if (enemy.visible === true && databus.level>1){
+          enemy.shoot();
+          this.music.playShoot();
+        }
       }
     });
 
@@ -207,3 +226,15 @@ export default class Main {
     )
   }
 }
+
+// 支持转发
+wx.onShareAppMessage(function () {
+  // 用户点击了“转发”按钮
+  return {
+    title: '一起打飞机'
+  }
+})
+
+wx.showShareMenu({
+  withShareTicket: true
+})

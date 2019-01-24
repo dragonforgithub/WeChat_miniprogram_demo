@@ -1,8 +1,8 @@
 import Sprite   from '../base/sprite'
 import DataBus  from '../databus'
 
-const BULLET_IMG_SRC = 'images/bullet.png'
-const BULLET_DOWN_IMG_SRC = 'images/bullet_down.png' //add1
+const BULLET_IMG_SRC = 'images/hero_bullet.png'
+const BULLET_DOWN_IMG_SRC = 'images/enemy_bullet.png' //add1
 const BULLET_WIDTH   = 16
 const BULLET_HEIGHT  = 30
 

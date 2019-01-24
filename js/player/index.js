@@ -27,24 +27,14 @@ export default class Player extends Sprite {
 
     // 初始化事件监听
     this.initEvent()
-
-    // 初始化等级1
-    this.playerLevel = 1;
+    
   }
 
   /**
    * 获取等级
    */
   get level() {
-    return this.playerLevel;
-  }
-
-  /**
-   * 设置等级
-   * @param {Number} level: 玩家等级
-   */
-  set level(level) {
-    this.playerLevel = Math.min(level, 3);
+    return databus.level;
   }
 
   /**
@@ -148,14 +138,16 @@ export default class Player extends Sprite {
     for (let i = 0; i < this.level; i++) {
       //const bullet = databus.pool.getItemByClass('bullet', Bullet);
       /*为其中创建的bullets提供归属*/
-      const bullet = databus.pool.getItemByClass('bullet', Bullet, { direction: 'up', owner: this });
+      const bullet = databus.pool.getItemByClass('bullet', Bullet, { 
+        direction: 'up', 
+        owner: this });
       
       const middle = this.x + this.width / 2 - bullet.width / 2;
       const x = !i ? middle : (i % 2 === 0 ? middle + 30 : middle - 30);
       bullet.init(
         x,
         this.y - 10,
-        10
+        12
       )
 
       databus.bullets.push(bullet)

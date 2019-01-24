@@ -52,8 +52,9 @@ export default class Enemy extends Animation {
     this.y += this[__.speed]
 
     // 对象回收
-    if ( this.y > window.innerHeight + this.height )
+    if ( this.y > window.innerHeight + this.height ){
       databus.removeEnemey(this)
+    }
   }
 
   /**
@@ -62,7 +63,10 @@ export default class Enemy extends Animation {
    */
   shoot() {
     //const bullet = databus.pool.getItemByClass('bullet', Bullet);
-    const bullet = databus.pool.getItemByClass('bullet', Bullet, { direction: 'down', owner: this });
+    const bullet = databus.pool.getItemByClass('bullet', Bullet, { 
+      direction: 'down', 
+      owner: this });
+
     bullet.init(
       this.x + this.width / 2 - bullet.width / 2,
       this.y + 10,
